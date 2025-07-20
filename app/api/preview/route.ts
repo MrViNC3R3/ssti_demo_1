@@ -1,8 +1,7 @@
-export async function POST(req) {
+export async function POST(req: Request) {
   const { description } = await req.json();
 
   // Replace all {{ ... }} with ${ ... }
-  // This handles spaces between the braces and the JS expression too
   const processed = description.replace(/{{\s*([^}]*)\s*}}/g, (_, code) => `\${${code}}`);
 
   try {
@@ -11,7 +10,7 @@ export async function POST(req) {
     return new Response(JSON.stringify({ result }), {
       headers: { "Content-Type": "application/json" }
     });
-  } catch (e) {
+  } catch (e: any) {
     return new Response(JSON.stringify({ result: "Error: " + e.message }), {
       headers: { "Content-Type": "application/json" }
     });
