@@ -1,8 +1,11 @@
 export async function POST(req: Request) {
   const { description } = await req.json();
 
-  // Replace all {{ ... }} with ${ ... }
-  const processed = description.replace(/{{\s*([^}]*)\s*}}/g, (_, code) => `\${${code}}`);
+  // Safely type both parameters for the replacement function
+  const processed = description.replace(
+    /{{\s*([^}]*)\s*}}/g, 
+    (_: string, code: string) => `\${${code}}`
+  );
 
   try {
     const render = new Function(`return \`${processed}\`;`);
